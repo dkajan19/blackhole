@@ -29,3 +29,4 @@ This project is not affiliated with or endorsed by Cobalt Tools or any of the pl
 
 **License:** The APK is for personal use only. You may download and install it, and share links to this repository, but you may not redistribute, modify, or commercialize the app. See the [LICENSE](./LICENSE) file for details.
 
+![visitors](https://visitor-badge.laobi.icu/badge?page_id=dkajan19.blackhole)
