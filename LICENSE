@@ -1,0 +1,24 @@
+Limited Personal Use License
+Copyright (c) 2025 Denis Kajan
+
+This repository contains the Android application "BlackHole".
+
+You are allowed to:
+- Download and install the provided APK file for personal, non-commercial use.
+- Share links to this original GitHub repository to let others download it.
+
+You are NOT allowed to:
+- Re-upload, redistribute, or host the APK file on other websites or platforms.
+- Modify, decompile, or reverse-engineer the application or its contents.
+- Claim authorship of, or create derivative works based on, the app.
+- Use the app or its assets for commercial purposes.
+
+All rights remain with the author.
+
+The app "BlackHole" uses the public Cobalt Tools API hosted at https://cobalt.meowing.de/.  
+The developer of this app is not affiliated with, or responsible for, that service.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,  
+INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE,  
+AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY  
+ARISING FROM THE USE OR INABILITY TO USE THE APP.
