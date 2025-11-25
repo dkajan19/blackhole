@@ -1,6 +1,6 @@
 # <img src="images/blackhole.gif" alt="BlackHole GIF" width="25" /> BlackHole
 
-**BlackHole** is an Android app that lets you download videos from multiple platforms using the Cobalt Tools API hosted at https://cblt.fariz.dev/. Supported platforms include YouTube, TikTok, Instagram, Facebook, Twitter (X), Snapchat, Reddit, Pinterest, Twitch, and more.
+**BlackHole** is an Android app that lets you download videos from multiple platforms using the Cobalt Tools API. Supported platforms include YouTube, TikTok, Instagram, Facebook, Twitter (X), Snapchat, Reddit, Pinterest, Twitch, and more.
 
 **How it works:**  
 - From supported platforms, simply **share the video** and choose BlackHole to download.  
