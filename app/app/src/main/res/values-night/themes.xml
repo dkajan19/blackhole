@@ -1,0 +1,19 @@
+<resources>
+    <style name="Theme.BlackHole" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@android:color/system_accent1_200</item>
+        <item name="colorOnPrimary">@android:color/system_accent1_900</item>
+        <item name="colorSecondary">@android:color/system_accent1_200</item>
+        <item name="colorOnSecondary">@android:color/system_accent2_900</item>
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
+        <item name="android:navigationBarColor">?attr/colorPrimary</item>
+
+        <!-- <item name="android:windowBackground">@android:color/system_accent1_900</item> -->
+
+    </style>
+
+
+
+<style name="Theme.RemoveSplashScreenTheme" parent="@style/Theme.BlackHole">
+    <item name="android:windowIsTranslucent">true</item>
+</style>
+</resources>
