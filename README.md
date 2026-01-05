@@ -2,6 +2,8 @@
 
 **BlackHole** is an Android app that lets you download videos from multiple platforms using the Cobalt Tools API. Supported platforms include YouTube, TikTok, Instagram, Facebook, Twitter (X), Snapchat, Reddit, Pinterest, Twitch, and more.
 
+<a href='https://ko-fi.com/J3J11RQE5L' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi2.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+
 **How it works:**  
 - From supported platforms, simply **share the video** and choose BlackHole to download.  
 - Or **copy the video URL** and paste it into the app, then click **Download**.  
