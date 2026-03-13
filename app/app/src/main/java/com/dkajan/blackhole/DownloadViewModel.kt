@@ -49,7 +49,8 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         .writeTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
         .build()
     private val cobaltApiUrl = "https://api.cobalt.blackcat.sweeux.org/"
-    //"https://cblt.fariz.dev/"
+    //BACKUP "https://cblt.fariz.dev/"
+    //DIFFERENT INSTANCES AT https://cobalt.directory/
     private val gson = Gson()
 
     fun downloadVideo(videoUrl: String) {
