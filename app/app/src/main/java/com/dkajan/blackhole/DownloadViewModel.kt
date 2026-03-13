@@ -48,7 +48,8 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         .readTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
         .writeTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
         .build()
-    private val cobaltApiUrl = "https://cblt.fariz.dev/"
+    private val cobaltApiUrl = "https://api.cobalt.blackcat.sweeux.org/"
+    //"https://cblt.fariz.dev/"
     private val gson = Gson()
 
     fun downloadVideo(videoUrl: String) {
@@ -77,8 +78,10 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
                     .build()
 
                 val response = client.newCall(request).execute()
+
+                //Log.d("RESPONSE",response.toString())
                 if (!response.isSuccessful) {
-                    _downloadStatus.postValue("Failed to fetch URL.")
+                    _downloadStatus.postValue("Failed to fetch URL (" + response.code + ").")
                     _isDownloading.postValue(false)
                     _isButtonEnabled.postValue(true)
                     return@launch
