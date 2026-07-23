@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">BlackHole</string>
-    <string name="api_provider">© api.cobalt.blackcat.sweeux.org</string>
-    <string name="api_info">This application uses the public API service <b>blackcat.sweeux.org</b>. The application itself is independent and not affiliated with the API provider.</string>
+    <string name="api_info">This application uses the public API service <b>serviceName</b>. The application itself is independent and not affiliated with the API provider.</string>
     <string name="platforms">YouTube Shorts, TikTok, Facebook (Public content), Instagram, Twitter (X), Snapchat, Reddit, Pinterest, Twitch &amp; more"</string>
 </resources>

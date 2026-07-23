@@ -11,13 +11,14 @@ import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.util.Patterns
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.view.ViewGroup
 import android.view.animation.AnticipateInterpolator
 import android.view.animation.OvershootInterpolator
@@ -28,6 +29,7 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import com.google.android.material.textfield.TextInputEditText
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -42,8 +44,6 @@ import java.util.Calendar
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: DownloadViewModel by viewModels()
-    private val handler = Handler(Looper.getMainLooper())
-    private var infoRunnable: Runnable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,8 +95,44 @@ class MainActivity : AppCompatActivity() {
         val statusText: TextView = findViewById(R.id.statusText)
         val downloadInfoText: TextView = findViewById(R.id.downloadInfoText)
         val loadingGif: ImageView = findViewById(R.id.loadingGif)
-        val informationIcon: ImageView = findViewById(R.id.information_icon)
+        val apiIcon: ImageView = findViewById(R.id.api_icon)
         val apiInfoContainer: LinearLayout = findViewById(R.id.api_info_container)
+        val apiUrlInput: TextInputEditText = findViewById(R.id.api_url_input)
+        val apiUrlInputLayout: com.google.android.material.textfield.TextInputLayout = findViewById(R.id.api_url_input_layout)
+        val saveApiUrlButton: Button = findViewById(R.id.save_api_url_button)
+        val closeApiUrlButton: Button = findViewById(R.id.close_api_url_button)
+        val apiDescriptionText: TextView = findViewById(R.id.api_description_text)
+
+        apiDescriptionText.text = android.text.Html.fromHtml(
+            "You can enter a custom Cobalt API URL below. Different instances are available at <a href=\"https://cobalt.directory\">cobalt.directory</a>",
+            android.text.Html.FROM_HTML_MODE_COMPACT
+        )
+        apiDescriptionText.movementMethod = android.text.method.LinkMovementMethod.getInstance()
+        apiDescriptionText.highlightColor = android.graphics.Color.TRANSPARENT
+
+
+        val prefs = getSharedPreferences("blackhole_prefs", Context.MODE_PRIVATE)
+        val defaultApiUrl = "https://api.cobalt.liubquanti.click/"
+        val savedApiUrl = prefs.getString("api_url", defaultApiUrl)
+        apiUrlInput.setText(savedApiUrl)
+
+        apiUrlInputLayout.setEndIconOnClickListener {
+            apiUrlInput.setText(defaultApiUrl)
+            prefs.edit().putString("api_url", defaultApiUrl).apply()
+            viewModel.updateApiUrl(defaultApiUrl)
+            Toast.makeText(this, "API URL reset to default.", Toast.LENGTH_SHORT).show()
+            apiIcon.performClick()
+        }
+
+        saveApiUrlButton.isEnabled = false
+
+        apiUrlInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                saveApiUrlButton.isEnabled = s?.toString()?.trim() != savedApiUrl
+            }
+        })
 
         Glide.with(this)
             .asGif()
@@ -162,6 +198,9 @@ class MainActivity : AppCompatActivity() {
         })
 
         downloadButton.setOnClickListener {
+            if (apiInfoContainer.visibility == View.VISIBLE) {
+                apiIcon.performClick()
+            }
             val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             if (clipboardManager.hasPrimaryClip() &&
                 clipboardManager.primaryClipDescription?.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN) == true
@@ -199,61 +238,71 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        informationIcon.setOnClickListener {
-            infoRunnable?.let { handler.removeCallbacks(it) }
+        saveApiUrlButton.setOnClickListener {
+            val url = apiUrlInput.text.toString().trim()
+            if (url.isNotEmpty()) {
+                prefs.edit().putString("api_url", url).apply()
+                viewModel.updateApiUrl(url)
+                Toast.makeText(this, "API URL saved.", Toast.LENGTH_SHORT).show()
+                apiIcon.performClick()
+            }
+        }
 
-            informationIcon.animate().cancel()
+        closeApiUrlButton.setOnClickListener {
+            apiIcon.performClick()
+        }
+
+        apiIcon.setOnClickListener {
+            apiIcon.animate().cancel()
             apiInfoContainer.animate().cancel()
 
-            informationIcon.alpha = 1f
-            informationIcon.visibility = View.VISIBLE
-            apiInfoContainer.alpha = 0f
-            apiInfoContainer.visibility = View.GONE
-
-            informationIcon.animate()
-                .alpha(0f)
-                .setDuration(300)
-                .setListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator) {
-                        informationIcon.visibility = View.GONE
-                        apiInfoContainer.apply {
-                            alpha = 0f
-                            visibility = View.VISIBLE
-                            animate()
-                                .alpha(1f)
-                                .setDuration(300)
-                                .setListener(null)
-                                .start()
+            if (apiInfoContainer.visibility == View.VISIBLE) {
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(apiUrlInput.windowToken, 0)
+                apiInfoContainer.animate()
+                    .alpha(0f)
+                    .setDuration(300)
+                    .setListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator) {
+                            apiInfoContainer.visibility = View.GONE
+                            apiIcon.apply {
+                                alpha = 0f
+                                visibility = View.VISIBLE
+                                animate()
+                                    .alpha(1f)
+                                    .setDuration(300)
+                                    .setListener(null)
+                                    .start()
+                            }
                         }
-
-                        infoRunnable = Runnable {
-                            apiInfoContainer.animate()
-                                .alpha(0f)
-                                .setDuration(300)
-                                .setListener(object : AnimatorListenerAdapter() {
-                                    override fun onAnimationEnd(animation: Animator) {
-                                        apiInfoContainer.visibility = View.GONE
-                                        // Zobrazenie ikonky s animáciou
-                                        informationIcon.apply {
-                                            alpha = 0f
-                                            visibility = View.VISIBLE
-                                            animate()
-                                                .alpha(1f)
-                                                .setDuration(300)
-                                                .setListener(null)
-                                                .start()
-                                        }
-                                    }
-                                }).start()
+                    }).start()
+            } else {
+                apiIcon.animate()
+                    .alpha(0f)
+                    .setDuration(300)
+                    .setListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator) {
+                            apiIcon.visibility = View.GONE
+                            apiInfoContainer.apply {
+                                alpha = 0f
+                                visibility = View.VISIBLE
+                                animate()
+                                    .alpha(1f)
+                                    .setDuration(300)
+                                    .setListener(null)
+                                    .start()
+                            }
                         }
-
-                        handler.postDelayed(infoRunnable!!, 12000)
-                    }
-                }).start()
+                    }).start()
+            }
         }
 
         viewModel.isButtonEnabled.observe(this) { enabled ->
             downloadButton.isEnabled = enabled
+            apiIcon.isEnabled = enabled
+            apiIcon.alpha = 1f
+            apiIcon.colorFilter = if (enabled) null else android.graphics.PorterDuffColorFilter(
+                android.graphics.Color.GRAY, android.graphics.PorterDuff.Mode.SRC_IN)
         }
 
 
@@ -353,6 +402,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun handleIncomingShare(intent: Intent?) {
         if (intent?.action == Intent.ACTION_SEND && intent.type == "text/plain") {
+            val apiInfoContainer = findViewById<LinearLayout>(R.id.api_info_container)
+            if (apiInfoContainer.visibility == View.VISIBLE) {
+                findViewById<ImageView>(R.id.api_icon).performClick()
+            }
             val sharedText = intent.getStringExtra(Intent.EXTRA_TEXT)
             if (!sharedText.isNullOrEmpty()) {
                 val matcher = Patterns.WEB_URL.matcher(sharedText)

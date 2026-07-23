@@ -48,10 +48,19 @@ class DownloadViewModel(application: Application) : AndroidViewModel(application
         .readTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
         .writeTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
         .build()
-    private val cobaltApiUrl = "https://api.cobalt.blackcat.sweeux.org/"
-    //BACKUP "https://cblt.fariz.dev/"
+    private val defaultApiUrl = "https://api.cobalt.liubquanti.click/"
+    private var cobaltApiUrl: String
     //DIFFERENT INSTANCES AT https://cobalt.directory/
     private val gson = Gson()
+
+    init {
+        val prefs = application.getSharedPreferences("blackhole_prefs", android.content.Context.MODE_PRIVATE)
+        cobaltApiUrl = prefs.getString("api_url", defaultApiUrl) ?: defaultApiUrl
+    }
+
+    fun updateApiUrl(url: String) {
+        cobaltApiUrl = url
+    }
 
     fun downloadVideo(videoUrl: String) {
         viewModelScope.launch(Dispatchers.IO) {

@@ -8,6 +8,8 @@
         <item name="android:navigationBarColor">?attr/colorPrimary</item>
 
         <!-- <item name="android:windowBackground">@android:color/system_accent1_900</item> -->
+        <item name="android:textColorHighlight">@android:color/system_accent1_400</item>
+
 
     </style>
 

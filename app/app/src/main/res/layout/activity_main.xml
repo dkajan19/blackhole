@@ -89,15 +89,15 @@
         android:padding="12dp">
 
         <ImageView
-            android:id="@+id/information_icon"
+            android:id="@+id/api_icon"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_gravity="start"
             android:layout_margin="5dp"
-            android:src="@drawable/information"
-            android:contentDescription="API Information"
+            android:src="@drawable/api"
+            android:contentDescription="API Settings"
             android:visibility="visible"
-            android:tint="@android:color/darker_gray"/>
+            android:tint="?attr/colorPrimary"/>
 
         <LinearLayout
             android:id="@+id/api_info_container"
@@ -107,44 +107,59 @@
             android:visibility="gone">
 
             <TextView
-                android:id="@+id/api_text_title"
+                android:id="@+id/api_description_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/api_provider"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/api_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/api_info"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="12sp"
-                android:layout_marginTop="4dp" />
+                android:autoLink="web" />
 
-
-            <!-- Supported Services Section -->
-            <TextView
-                android:id="@+id/supported_services_title"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/api_url_input_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Supported Services"
-                android:textColor="?attr/colorPrimary"
-                android:textSize="14sp"
-                android:textStyle="bold|italic"
-                android:layout_marginTop="30dp" />
+                android:layout_marginTop="8dp"
+                android:hint="API URL"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/refresh"
+                app:endIconTint="?attr/colorPrimary"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
 
-            <TextView
-                android:id="@+id/supported_services_list"
-                android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/api_url_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textUri"
+                    android:textSize="13sp"
+                    android:singleLine="true" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/platforms"
-                android:textSize="12sp"
-                android:textStyle="italic"
-                android:textColor="?attr/colorPrimary"
-                android:layout_marginTop="4dp" />
+                android:orientation="horizontal"
+                android:layout_gravity="end"
+                android:layout_marginTop="8dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/save_api_url_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Save"
+                    android:textSize="12sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/close_api_url_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Close"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    app:strokeColor="?attr/colorPrimary"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>
